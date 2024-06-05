@@ -15,8 +15,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
+from siem_app.views import LogViewSet, AlertViewSet, log_upload, detect_anomaly, root_view
+
+router = DefaultRouter()
+router.register(r'logs', LogViewSet)
+router.register(r'alerts', AlertViewSet)
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/', include(router.urls)),
+    path('api/log_upload/', log_upload),
+    path('api/detect-anomaly/', detect_anomaly),
+    path('', root_view),
 ]
+
